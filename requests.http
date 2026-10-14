@@ -1,0 +1,110 @@
+
+# You can use this file to easily send requests to your API.
+# Prerequisite: humao.rest-client Vscode plugin (already present on codespace)
+# High-level overview of REST API concepts used here: https://www.packtpub.com/en-us/learning/how-to-tutorials/what-are-rest-verbs-and-status-codes-tutorial?srsltid=AfmBOoppDqtkhRxj5BLZONRZFzRDmh6eP-xyTo6H4OuEHYuVbrg1d4Dm
+
+
+# Requests for API endpoints of the sample project:
+
+### Hello world endpoint: get response "Hello, Stranger!"
+GET http://localhost:8080/hello-world
+
+### Hello world with a request param passed.
+# When sending the request it will ask you for the name
+# hitting enter will avoid passing the param, and do the default behaviour above
+# @prompt name The name to display in response
+GET http://localhost:8080/hello-world
+    ?name={{name}}
+
+### Save a greeting to database
+@postGreetingId = 1001
+@postGreetingContent = Hello!
+POST http://localhost:8080/greetings
+Content-Type: application/json
+
+{
+    "id": "{{postGreetingId}}",
+    "content": "{{postGreetingContent}}"
+}
+
+### Get all greetings
+GET http://localhost:8080/greetings
+
+### Get info for greeting with given content
+# @prompt content Greeting content to look for, defaults to "Overview"
+GET http://localhost:8080/info
+    ?title={{content}}
+
+### Update an existing greeting
+@putGreetingId = 1001
+@putGreetingContent = Hello again!
+PUT http://localhost:8080/greetings/{{putGreetingId}}
+Content-Type: application/json
+
+{
+    "content": "{{putGreetingContent}}"
+}
+
+### Delete greeting
+@deleteGreetingId = 1001
+DELETE http://localhost:8080/greetings/{{deleteGreetingId}}
+
+
+# ---------- Auth ----------
+
+### Sign up (201 + user | 400 invalid data | 409 username/email taken)
+POST http://localhost:8080/auth/signup
+Content-Type: application/json
+
+{
+    "username": "ana",
+    "email": "ana@example.com",
+    "password": "Parola1"
+}
+
+### Login with username or email (200 + user | 401 invalid credentials)
+POST http://localhost:8080/auth/login
+Content-Type: application/json
+
+{
+    "username": "ana",
+    "password": "Parola1"
+}
+
+### All users
+GET http://localhost:8080/users
+
+# ---------- Products / stock ----------
+
+### Is the product in stock? Can I buy 2?
+@productId = PUT_PRODUCT_ID_HERE
+GET http://localhost:8080/products/{{productId}}/stock?quantity=2
+
+# ---------- Cart (userId = "id" from the signup/login response) ----------
+@userId = PUT_USER_ID_HERE
+
+### Get cart
+GET http://localhost:8080/carts/user/{{userId}}
+
+### Add product to cart (409 if not enough stock)
+POST http://localhost:8080/carts/user/{{userId}}/items
+Content-Type: application/json
+
+{
+    "productId": "{{productId}}",
+    "quantity": 1
+}
+
+### Change quantity (0 removes the product)
+PUT http://localhost:8080/carts/user/{{userId}}/items/{{productId}}
+Content-Type: application/json
+
+{
+    "quantity": 2
+}
+
+### Remove product from cart
+DELETE http://localhost:8080/carts/user/{{userId}}/items/{{productId}}
+
+### Checkout: creates the order, decrements stock, empties the cart
+POST http://localhost:8080/carts/user/{{userId}}/checkout

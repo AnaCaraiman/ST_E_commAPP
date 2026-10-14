@@ -1,0 +1,64 @@
+package com.example.ecommerce.controller;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+import com.example.ecommerce.dto.ProductDTO;
+import com.example.ecommerce.dto.StockDTO;
+import com.example.ecommerce.exception.EntityNotFoundException;
+import com.example.ecommerce.service.ProductService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/products")
+public class ProductController {
+
+    @Autowired
+    private ProductService productService;
+
+    @GetMapping
+    public List<ProductDTO> getAllProducts() {
+        return productService.getAllProducts();
+    }
+
+    @GetMapping("/{id}")
+    public ProductDTO getProductById(@PathVariable String id) throws EntityNotFoundException {
+        return productService.getProductById(id);
+    }
+
+    @Operation(summary = "Check whether a product is in stock and whether `quantity` pieces are available")
+    @GetMapping("/{id}/stock")
+    public StockDTO checkStock(@PathVariable String id, @RequestParam(defaultValue = "1") long quantity) {
+        return productService.checkStock(id, quantity);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public List<ProductDTO> getProductsByCategory(@PathVariable String categoryId) {
+        return productService.getProductsByCategory(categoryId);
+    }
+
+    @GetMapping("/top-ordered")
+    public ResponseEntity<List<ProductDTO>> getTopMostOrderedProducts(@RequestParam(defaultValue = "5") int limit) {
+        List<ProductDTO> topProducts = productService.getTopMostOrderedProducts(limit);
+        return ResponseEntity.ok(topProducts);
+}
+
+    @PostMapping
+    public ProductDTO createProduct(@RequestBody ProductDTO productDTO) {
+        return productService.saveProduct(productDTO);
+    }
+
+    @PutMapping("/{id}")
+    public ProductDTO updateProduct(@PathVariable String id, @RequestBody ProductDTO productDTO) throws EntityNotFoundException {
+        return productService.updateProduct(id, productDTO);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteProduct(@PathVariable String id) throws EntityNotFoundException {
+        productService.deleteProduct(id);
+    }
+}
