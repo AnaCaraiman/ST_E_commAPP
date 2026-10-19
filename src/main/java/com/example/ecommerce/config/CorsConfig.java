@@ -5,9 +5,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
-/**
- * Allows a front-end served from another origin (React/Vite/Angular dev servers) to call the API.
- */
 @Configuration
 public class CorsConfig implements WebMvcConfigurer {
 

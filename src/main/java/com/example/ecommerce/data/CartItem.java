@@ -1,8 +1,5 @@
 package com.example.ecommerce.data;
 
-/**
- * A product line inside a {@link CartEntity} (embedded document).
- */
 public class CartItem {
 
     private String productId;

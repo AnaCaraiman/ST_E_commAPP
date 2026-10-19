@@ -45,9 +45,6 @@ public class UserService {
         return userRepository.findAll().stream().map(UserService::toDTO).toList();
     }
 
-    /**
-     * Sign up: validates the input, rejects a duplicate username/email and stores the BCrypt-hashed password.
-     */
     public UserDTO register(UserCreateDTO userDTO) {
         if (userDTO == null) {
             throw new ValidationException("Request body is required");
@@ -72,10 +69,6 @@ public class UserService {
         return toDTO(saved);
     }
 
-    /**
-     * Login with username or email + password. Returns the user so the front-end can keep its id.
-     * An unknown user and a wrong password give the same error, so the API does not reveal which accounts exist.
-     */
     public UserDTO login(UserLoginDTO userDTO) {
         if (userDTO == null || isBlank(userDTO.getUsername()) || isBlank(userDTO.getPassword())) {
             throw new ValidationException("Username and password are required");

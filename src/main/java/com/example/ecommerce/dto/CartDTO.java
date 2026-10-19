@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * The cart as the front-end sees it: lines with product details, plus the total.
- */
 public class CartDTO {
 
     private String id;

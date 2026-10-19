@@ -170,7 +170,6 @@ public class AuthAndCartIntegrationTest {
                 .andExpect(jsonPath("$.items[0].quantity").value(2))
                 .andExpect(jsonPath("$.totalPrice").value(2000));
 
-        // 2 already in cart + 2 more > 3 in stock
         mockMvc.perform(post(cartUrl + "/items")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"productId\":\"" + product.getId() + "\",\"quantity\":2}"))

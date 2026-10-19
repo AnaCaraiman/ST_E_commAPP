@@ -45,7 +45,6 @@ public class OrderService {
     }
 
     public OrderDTO createOrder(UserEntity user, List<ProductOrderEntity> productOrders, String status) {
-        // Check every product first, so a failing order doesn't leave the stock of the other products decremented
         for (ProductOrderEntity productOrder : productOrders) {
             ProductEntity product = productOrder.getProduct();
             long stock = product.getStock() == null ? 0 : product.getStock();
@@ -61,7 +60,6 @@ public class OrderService {
 
         List<ProductOrderEntity> savedProductOrders = productOrderRepository.saveAll(productOrders);
 
-        // Performance-safe: exclude popularea orderHistory
         OrderEntity order = new OrderEntity(null, user, savedProductOrders, status, LocalDateTime.now(), null);
         orderRepository.save(order);
 

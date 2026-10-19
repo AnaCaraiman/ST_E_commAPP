@@ -9,9 +9,6 @@ import com.example.ecommerce.service.UserService;
 
 import java.util.List;
 
-/**
- * Account creation and login live in {@link AuthController} (/auth/signup, /auth/login).
- */
 @RestController
 @RequestMapping("/users")
 @Tag(name = "Users")

@@ -22,9 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Shopping cart: every add/update checks the product stock. Stock is only decremented at checkout (order creation).
- */
 @Service
 public class CartService {
 
@@ -45,9 +42,6 @@ public class CartService {
         return toDTO(findOrCreateCart(userId));
     }
 
-    /**
-     * Adds `quantity` pieces of a product to the user's cart (or increases the quantity if it's already there).
-     */
     public CartDTO addItem(String userId, String productId, Long quantity) {
         ensureUserExists(userId);
         if (productId == null || productId.isBlank()) {
@@ -70,9 +64,6 @@ public class CartService {
         return save(cart);
     }
 
-    /**
-     * Sets the quantity of a product already in the cart. Quantity 0 removes it.
-     */
     public CartDTO updateItemQuantity(String userId, String productId, Long quantity) {
         ensureUserExists(userId);
         if (quantity == null || quantity < 0) {
@@ -108,9 +99,6 @@ public class CartService {
         return save(cart);
     }
 
-    /**
-     * Turns the cart into an order (stock is re-checked and decremented by OrderService), then empties the cart.
-     */
     public OrderDTO checkout(String userId) {
         UserEntity user = userRepository.findById(userId).orElseThrow(() -> new EntityNotFoundException(userId));
         CartEntity cart = findOrCreateCart(userId);
@@ -159,7 +147,6 @@ public class CartService {
     private CartDTO toDTO(CartEntity cart) {
         List<CartItemDTO> items = new ArrayList<>();
         for (CartItem item : cart.getItems()) {
-            // A product deleted from the catalog after being added to the cart is shown as unavailable.
             ProductEntity product = productRepository.findById(item.getProductId()).orElse(null);
             if (product == null) {
                 items.add(new CartItemDTO(item.getProductId(), null, 0, item.getQuantity(), 0));

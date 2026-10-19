@@ -1,8 +1,5 @@
 package com.example.ecommerce.dto;
 
-/**
- * Answer of GET /products/{id}/stock?quantity=N
- */
 public class StockDTO {
 
     private String productId;

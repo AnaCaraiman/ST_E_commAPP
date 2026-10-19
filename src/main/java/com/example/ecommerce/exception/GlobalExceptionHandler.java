@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Every error is returned as JSON: {"status": 409, "error": "..."} so the front-end can show the message.
- */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 

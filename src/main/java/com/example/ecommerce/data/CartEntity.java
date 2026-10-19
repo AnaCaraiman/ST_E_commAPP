@@ -8,9 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * One shopping cart per user, holding the products and their quantities.
- */
 @Document(collection = "carts")
 public class CartEntity {
 

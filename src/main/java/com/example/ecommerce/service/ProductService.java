@@ -51,7 +51,7 @@ public class ProductService {
 
     public List<ProductDTO> getTopMostOrderedProducts(int limit) {
         Map<ProductDTO, Long> productOrderCounts = orderRepository.findAll().stream()
-            .flatMap(order -> order.getProductOrders().stream()) // Assuming OrderEntity has a getProductOrders() method
+            .flatMap(order -> order.getProductOrders().stream())
             .map(productOrder -> {
                 ProductEntity product = productOrder.getProduct();
                 return toDTO(product);
@@ -150,9 +150,6 @@ public class ProductService {
     }
     
 
-    /**
-     * Stock check for the front-end: is the product in stock, and can the given quantity be bought?
-     */
     public StockDTO checkStock(String id, long quantity) throws EntityNotFoundException {
         if (quantity < 1) {
             throw new ValidationException("Quantity must be at least 1.");

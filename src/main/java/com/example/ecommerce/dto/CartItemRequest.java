@@ -1,8 +1,5 @@
 package com.example.ecommerce.dto;
 
-/**
- * Body of POST /carts/user/{userId}/items and PUT /carts/user/{userId}/items/{productId}.
- */
 public class CartItemRequest {
 
     private String productId;

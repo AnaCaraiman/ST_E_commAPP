@@ -10,11 +10,7 @@
 GET http://localhost:8080/hello-world
 
 ### Hello world with a request param passed.
-# When sending the request it will ask you for the name
-# hitting enter will avoid passing the param, and do the default behaviour above
-# @prompt name The name to display in response
-GET http://localhost:8080/hello-world
-    ?name={{name}}
+GET http://localhost:8080/hello-world?name=Ana
 
 ### Save a greeting to database
 @postGreetingId = 1001
@@ -31,9 +27,7 @@ Content-Type: application/json
 GET http://localhost:8080/greetings
 
 ### Get info for greeting with given content
-# @prompt content Greeting content to look for, defaults to "Overview"
-GET http://localhost:8080/info
-    ?title={{content}}
+GET http://localhost:8080/info?title=Overview
 
 ### Update an existing greeting
 @putGreetingId = 1001
