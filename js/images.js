@@ -13,18 +13,8 @@ const IMAGE_FOLDER = '../images/';
 // The pictures below are simple placeholder illustrations that match tools/seed.js
 // [LEFT OUT #9] real product photos, or an imageUrl field in the backend so images can be managed by an admin
 const PRODUCT_IMAGES = {
-    'AeroBook 14': 'aerobook-14.svg',
-    'ProStation 16': 'prostation-16.svg',
-    'Netbook Mini': 'netbook-mini.svg',
-    'Nova X Phone': 'nova-x-phone.svg',
-    'Nova Lite Phone': 'nova-lite-phone.svg',
-    'Fast Charger 65W': 'fast-charger-65w.svg',
-    'Barista Coffee Machine': 'barista-coffee-machine.svg',
-    'AirCrisp Fryer': 'aircrisp-fryer.svg',
-    'Chef Knife Set': 'chef-knife-set.svg',
-    'Software Testing Fundamentals': 'software-testing-fundamentals.svg',
-    'Clean Code in Practice': 'clean-code-in-practice.svg',
-    'Spring Boot by Example': 'spring-boot-by-example.svg'
+    'HP Laptop': 'hp_laptop.png',
+    'HTC Charger': 'charger_1.png',
 };
 
 // Category name -> picture used when the product itself has none

@@ -12,19 +12,52 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 // Load categories and products at the same time (two independent backend calls)
 async function loadHomePage() {
-    try {
-        // BACKEND CALLS: GET /categories  and  GET /products
-        const [categories, products] = await Promise.all([apiGetCategories(), apiGetProducts()]);
+    //for testing with backend later
+    // try {
+    //     // BACKEND CALLS: GET /categories  and  GET /products
+    //     const [categories, products] = await Promise.all([apiGetCategories(), apiGetProducts()]);
 
-        categories.forEach(category => {
-            categoryNames[category.id] = category.name;
-        });
+    //     categories.forEach(category => {
+    //         categoryNames[category.id] = category.name;
+    //     });
 
-        renderCategoryFilters(categories);
-        renderProducts(products);
-    } catch (error) {
-        showGridMessage(getErrorMessage(error), true);
-    }
+    //     renderCategoryFilters(categories);
+    //     renderProducts(products);
+    // } catch (error) {
+    //     showGridMessage(getErrorMessage(error), true);
+    // }
+    //frontend only to verify imgs show up
+    const categories = [
+        { id: '1', name: 'Laptops' },
+        {id: '2', name: 'Chargers'}
+    ];
+
+    const products = [
+        {
+            id: '1',
+            name: 'HP Laptop',
+            description: 'Ultra-portable laptop.',
+            price: 999.99,
+            stock: 10,
+            categoryId: '1'
+        },
+        {
+            id: '2',
+            name: 'HTC Charger',
+            description: 'C-Type charger',
+            price: 85.00,
+            stock: 15,
+            categoryId: '2'
+
+        }
+    ];
+
+    categories.forEach(category => {
+        categoryNames[category.id] = category.name;
+    });
+
+    renderCategoryFilters(categories);
+    renderProducts(products);
 }
 
 // Create one button per category (the "All" button already exists in the HTML)
