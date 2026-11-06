@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Emag - My Profile</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav id="mainNav"></nav>
+
+    <div class="container">
+        <h1>My Profile</h1>
+
+        <div class="profile-card">
+            <div class="profile-info">
+                <div class="info-item">
+                    <div class="info-label">Username</div>
+                    <div class="info-value" id="username" data-testid="profile-username">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">Email</div>
+                    <div class="info-value" id="userEmail" data-testid="profile-email">-</div>
+                </div>
+                <div class="info-item">
+                    <div class="info-label">User ID</div>
+                    <div class="info-value order-id" id="userId" data-testid="profile-user-id">-</div>
+                </div>
+            </div>
+
+            <!-- [LEFT OUT #7] "Edit profile" / "Change password" / "Delete account" buttons.
+                 The job portal had Edit / Save / Cancel here, but the backend has NO update-user endpoint yet. -->
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/cart-service.js"></script>
+    <script src="../js/nav.js"></script>
+    <script src="profile.js"></script>
+</body>
+</html>

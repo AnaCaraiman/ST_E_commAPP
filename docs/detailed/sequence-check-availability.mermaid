@@ -1,0 +1,45 @@
+sequenceDiagram
+    autonumber
+    actor U as Customer
+    participant P as product-detail.js
+    participant A as api.js
+    participant C as ProductController
+    participant S as ProductService
+    participant D as MongoDB
+
+    U->>P: Type a quantity, click Check availability
+    P->>A: apiCheckStock(productId, quantity)
+    A->>C: GET /products/ID/stock?quantity=N
+    C->>S: checkStock(id, quantity)
+
+    alt quantity is below 1
+        S-->>C: throws ValidationException
+        C-->>A: 400 with error text "Quantity must be at least 1."
+    else quantity is valid
+        S->>D: findById(id)
+        D-->>S: product or nothing
+        alt product does not exist
+            S-->>C: throws EntityNotFoundException
+            C-->>A: 404 with error text
+        else product found
+            Note over S: inStock = stock above 0<br/>available = stock at least quantity
+            S-->>C: StockDTO
+            C-->>A: 200 StockDTO as JSON
+        end
+    end
+
+    alt 200 answer
+        A-->>P: StockDTO (productId, stock, inStock, requestedQuantity, available)
+        alt inStock is false
+            P-->>U: red text "Out of stock."
+        else available is true
+            P-->>U: green text "N available (M in stock)."
+        else not enough
+            P-->>U: red text "Not enough stock: N requested, only M left."
+        end
+    else error answer or server not reachable
+        A-->>P: throws ApiError(status, message)
+        P-->>U: red text with the backend message
+    end
+
+    Note over S,D: Read only. Nothing is reserved or changed.<br/>The stock is checked again by the backend when the item is added to the cart and at checkout.

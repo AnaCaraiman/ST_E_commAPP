@@ -1,0 +1,14 @@
+sequenceDiagram
+    actor User
+    participant Browser as Web browser
+    participant Server
+
+    User->>Browser: Choose quantity (below 1), click "Check availability"
+    activate Browser
+    Browser->>Server: Ask if this quantity of the product is available
+    activate Server
+    Server->>Server: Look up the product (not found, or quantity below 1)
+    Server-->>Browser: Error message
+    deactivate Server
+    Browser-->>User: Show the error message
+    deactivate Browser

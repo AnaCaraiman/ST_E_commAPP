@@ -1,0 +1,13 @@
+sequenceDiagram
+    actor User
+    participant Browser as Web browser
+    participant Server
+
+    User->>Browser: Add specific product and quantity to shopping cart
+    activate Browser
+    Browser->>Server: Update shopping cart with chosen product (stock is checked)
+    activate Server
+    Server--)Browser: Return updated shopping cart
+    deactivate Server
+    Browser--)User: Display updated shopping cart (message and cart counter)
+    deactivate Browser

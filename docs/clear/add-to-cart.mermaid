@@ -1,0 +1,17 @@
+---
+title: Add product to shopping cart
+---
+sequenceDiagram
+    autonumber
+    participant User
+    participant Products
+    participant Cart
+
+    activate User
+    User->>+Products: select product
+    Products-->>-User: product details
+    User->>+Cart: add product (quantity)
+    Cart->>+Products: find product
+    Products-->>-Cart: product found
+    Cart-->>-User: updated cart
+    deactivate User

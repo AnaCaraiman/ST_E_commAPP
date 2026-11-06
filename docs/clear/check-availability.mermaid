@@ -1,0 +1,17 @@
+---
+title: Check product availability
+---
+sequenceDiagram
+    autonumber
+    participant User
+    participant Products
+    participant Stock
+
+    activate User
+    User->>+Products: select product
+    Products-->>User: product details
+    User->>Products: check availability (quantity)
+    Products->>+Stock: get stock level
+    Stock-->>-Products: stock level
+    Products-->>-User: available / not enough stock / out of stock
+    deactivate User

@@ -1,0 +1,19 @@
+sequenceDiagram
+    actor User
+    participant Browser as Web browser (JavaScript)
+    participant Server as Server (Spring Boot REST API)
+    participant DB as Database (MongoDB)
+
+    User->>Browser: Choose quantity, click "Check availability"
+    activate Browser
+    Browser->>Server: API call: GET /products/ID/stock?quantity=N
+    activate Server
+    Server->>DB: Read the product
+    DB--)Server: Product (with stock)
+    Server->>Server: Compare the stock with the requested quantity
+    Server--)Browser: 200 OK (JSON: stock, inStock, requestedQuantity, available)
+    deactivate Server
+    Browser--)User: Display "available", "not enough stock" or "out of stock" (no page reload)
+    deactivate Browser
+
+    Note over Server,DB: Read only: nothing is reserved or changed

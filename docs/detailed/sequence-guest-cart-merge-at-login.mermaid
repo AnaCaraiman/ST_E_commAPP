@@ -1,0 +1,44 @@
+sequenceDiagram
+    autonumber
+    actor U as Customer
+    participant L as login.js
+    participant CS as cart-service.js
+    participant A as api.js
+    participant LS as localStorage
+    participant AC as AuthController
+    participant CC as CartController
+
+    Note over U,LS: The guest filled a cart earlier. It is stored in localStorage.
+    U->>L: Enter email and password, click Log In
+    L->>L: Email must contain an at sign
+    L->>A: apiLogin(email, password)
+    A->>AC: POST /auth/login with JSON username (holding the email) and password
+    alt wrong credentials
+        AC-->>A: 401 error text
+        A-->>L: throws ApiError
+        L-->>U: red message on the form
+    else correct credentials
+        AC-->>A: 200 id, username, email
+        A-->>L: user
+        L->>LS: save currentUser
+        L->>CS: mergeGuestCart(user.id)
+        CS->>LS: read guestCart
+        loop each guest line
+            CS->>A: apiAddToCart(userId, productId, quantity)
+            A->>CC: POST /carts/user/USERID/items
+            alt enough stock
+                CC-->>A: 200 CartDTO
+            else not enough stock
+                CC-->>A: 409 error text
+                A-->>CS: ApiError (message is collected as a problem)
+            end
+        end
+        CS->>LS: remove guestCart
+        CS-->>L: list of problems (may be empty)
+        alt there were problems
+            L->>LS: save notice text
+            L-->>U: go to the cart page, popup lists what could not be added
+        else everything moved
+            L-->>U: go to returnTo page (for example the cart) or the home page
+        end
+    end

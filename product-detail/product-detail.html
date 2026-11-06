@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Emag - Product Details</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav id="mainNav"></nav>
+
+    <div class="container">
+        <a href="../index_login/home_page.html" class="back-link">← Back to Products</a>
+
+        <div class="product-detail-card" id="productDetailContent">
+            <!-- Content will be loaded by JavaScript -->
+        </div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+    <div class="popup" id="popup">
+        <div class="popup-message" id="popupMessage" data-testid="popup-message"></div>
+        <button class="popup-close" id="popupClose">OK</button>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/images.js"></script>
+    <script src="../js/cart-service.js"></script>
+    <script src="../js/nav.js"></script>
+    <script src="product-detail.js"></script>
+</body>
+</html>

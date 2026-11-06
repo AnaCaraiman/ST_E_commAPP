@@ -1,0 +1,13 @@
+sequenceDiagram
+    actor User
+    participant Browser as Web browser
+    participant Server
+
+    User->>Browser: Check availability of a product in a chosen quantity
+    activate Browser
+    Browser->>Server: Request the stock of the product for that quantity
+    activate Server
+    Server--)Browser: Return stock level (in stock, quantity available or not)
+    deactivate Server
+    Browser--)User: Display "available", "not enough stock" or "out of stock"
+    deactivate Browser

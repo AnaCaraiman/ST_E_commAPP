@@ -1,0 +1,22 @@
+sequenceDiagram
+    actor User
+    participant Browser as Web browser (JavaScript)
+    participant Server as Server (Spring Boot REST API)
+    participant DB as Database (MongoDB)
+
+    User->>Browser: Choose quantity, click "Add to Cart"
+    activate Browser
+    Browser->>Server: API call: POST /carts/user/USERID/items (JSON: productId, quantity)
+    activate Server
+    Server->>DB: Check the user, read the product and the user's cart
+    DB--)Server: User, product (with stock) and cart
+    Server->>Server: Check there is enough stock, add the quantity to the cart
+    Server->>DB: Save the cart
+    DB--)Server: Saved
+    Server--)Browser: 200 OK (JSON: updated cart with items, totalItems, totalPrice)
+    deactivate Server
+    Browser--)User: Show "Added to your cart" and update the cart counter (no page reload)
+    deactivate Browser
+
+    Note over Browser,Server: The counter is then refreshed with a small second call: GET /carts/user/USERID
+    Note over Browser: A guest (not logged in) has no server cart: the item is saved in the browser (localStorage) after a stock check with GET /products/ID

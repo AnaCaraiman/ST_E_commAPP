@@ -1,0 +1,71 @@
+sequenceDiagram
+    autonumber
+    actor U as Customer
+    participant P as product-detail.js
+    participant CS as cart-service.js
+    participant A as api.js
+    participant LS as localStorage
+    participant CC as CartController
+    participant S as CartService
+    participant D as MongoDB
+
+    U->>P: Choose quantity, click Add to Cart
+    P->>P: Quantity must be a whole number
+    P->>CS: addItemToCart(productId, quantity)
+
+    alt Logged in (currentUser is in localStorage)
+        CS->>A: apiAddToCart(userId, productId, quantity)
+        A->>CC: POST /carts/user/USERID/items with JSON productId and quantity
+        CC->>S: addItem(userId, productId, quantity)
+        S->>D: does the user exist?
+        D-->>S: user or nothing
+        alt user does not exist
+            S-->>A: 404 error text
+        else quantity is below 1 or productId is empty
+            S-->>A: 400 error text
+        else
+            S->>D: find the product, find or create the user's cart
+            D-->>S: product and cart
+            Note over S: newQuantity = already in cart + quantity
+            alt product does not exist
+                S-->>A: 404 error text
+            else newQuantity is more than the stock
+                S-->>A: 409 error text plus productId and available
+            else enough stock
+                S->>D: save the cart with the new quantity
+                S-->>CC: CartDTO
+                CC-->>A: 200 CartDTO (items, totalItems, totalPrice)
+                A-->>CS: CartDTO
+            end
+        end
+        Note over A,CS: Any 4xx answer becomes a thrown ApiError(status, message)
+    else Guest (no user)
+        CS->>CS: quantity below 1 means ApiError 400
+        CS->>A: apiGetProductById(productId)
+        A->>CC: GET /products/ID
+        CC-->>A: 200 ProductDTO or 404
+        A-->>CS: ProductDTO (current stock)
+        CS->>LS: read guestCart (productId and quantity lines)
+        Note over CS: newQuantity = already in guest cart + quantity
+        alt newQuantity is more than the stock
+            CS-->>P: throws ApiError 409 with the same message as the backend
+        else enough stock
+            CS->>LS: save guestCart
+        end
+    end
+
+    alt added
+        P-->>U: popup "Added N x product to your cart."
+        P->>CS: updateCartBadge() asks getCartCount()
+        alt Logged in
+            CS->>A: apiGetCart(userId)
+            A->>CC: GET /carts/user/USERID
+            CC-->>A: 200 CartDTO
+            A-->>CS: totalItems
+        else Guest
+            CS->>LS: sum the quantities (no request)
+        end
+        CS-->>U: red badge on the Cart link shows the new count
+    else failed
+        P-->>U: red popup with the message, for example "Not enough stock for product X: requested 3, available 2"
+    end

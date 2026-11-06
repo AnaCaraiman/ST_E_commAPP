@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake Emag - Home</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <nav id="mainNav"></nav>
+
+    <div class="container">
+        <h1>Available Products</h1>
+
+        <!-- [LEFT OUT #2] "Bestsellers" strip  ->  GET /products/top-ordered?limit=5 -->
+
+        <!-- [LEFT OUT #4] search box, sort by price, price range, pagination -->
+
+        <!-- Category buttons: "All" is here from the start, the others are created by home.js from GET /categories -->
+        <div class="filters" id="categoryFilters">
+            <button class="filter-btn active" data-category="all" data-testid="filter-all">All</button>
+        </div>
+
+        <!-- Product cards are created by home.js from GET /products -->
+        <div class="products-grid" id="productsGrid" data-testid="products-grid">
+            <div class="state-message">Loading products...</div>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/common.js"></script>
+    <script src="../js/images.js"></script>
+    <script src="../js/cart-service.js"></script>
+    <script src="../js/nav.js"></script>
+    <script src="home.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+sequenceDiagram
+    actor User
+    participant Browser as Web browser
+    participant Server
+
+    User->>Browser: Choose quantity, click "Add to Cart"
+    activate Browser
+    Browser->>Server: Add this product and quantity to the cart
+    activate Server
+    Server->>Server: Check the product exists and there is enough stock
+
+    alt enough stock
+        Server->>Server: Save the cart
+        Server-->>Browser: Updated cart
+        Browser-->>User: Show "Added to your cart", update the cart counter
+    else not enough stock
+        Server-->>Browser: Error: not enough stock (and how many are left)
+        Browser-->>User: Show the error message
+    end
+
+    deactivate Server
+    deactivate Browser
